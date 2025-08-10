@@ -662,7 +662,9 @@ export class MonsterManager {
     this.game.figures.forEach((figure) => {
       if (figure instanceof Monster) {
         let ability = this.getAbility(figure);
-        if (ability) {
+        if (settingsManager.settings.manualMonsterDraw) {
+          figure.ability = figure.abilities.length === 1 ? 0 : -1;
+        } else if (ability) {
           if (this.hasBottomActions(figure)) {
             const secondAbility = ability;
             ability = this.getAbility(figure, true);

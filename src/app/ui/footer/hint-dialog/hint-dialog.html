@@ -46,5 +46,6 @@
     @if (eventDraw()) {
     <a (click)="confirm()"><span [ghs-label]="'round.hint.confirm'"></span></a>
     }
+    <p *ngIf="missingMonsterAbility()"><span [ghs-label]="'round.hint.missingMonsterAbility'"></span></p>
   </div>
 </div>
