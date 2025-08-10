@@ -19,6 +19,7 @@
     (singleClick)="openAbilities($event)" (doubleClick)="openAbility($event)">
   </ghs-ability>
   }
+  <ghs-manual-draw [monster]="monster" *ngIf="manualDraw"></ghs-manual-draw>
 </div>
 @if (settingsManager.settings.abilities) {
 <span class="left-abilities">
