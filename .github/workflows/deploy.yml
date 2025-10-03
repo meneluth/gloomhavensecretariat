@@ -28,8 +28,8 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Build Angular (base-href /)
-        run: npm run build -- --configuration production --base-href /
+      - name: Build Angular
+        run: npm run build -- --configuration production
 
       - name: Add 404.html
         run: |
