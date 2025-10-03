@@ -1,9 +1,10 @@
-import { AdvancedImbueAttackModifier, AttackModifier, AttackModifierDeck, AttackModifierType, AttackModifierValueType, CsOakDeckAttackModifier, GameAttackModifierDeckModel, ImbuementAttackModifier, additionalTownGuardAttackModifier, defaultAttackModifier, defaultTownGuardAttackModifier } from "src/app/game/model/data/AttackModifier";
+import { AdvancedImbueAttackModifier, AttackModifier, AttackModifierDeck, AttackModifierEffect, AttackModifierType, AttackModifierValueType, AttackResult, CsOakDeckAttackModifier, GameAttackModifierDeckModel, ImbuementAttackModifier, additionalTownGuardAttackModifier, defaultAttackModifier, defaultTownGuardAttackModifier } from "src/app/game/model/data/AttackModifier";
 import { ghsShuffleArray } from "src/app/ui/helper/Static";
 import { Character } from "../model/Character";
 import { CharacterData } from "../model/data/CharacterData";
 import { CampaignData } from "../model/data/EditionData";
 import { Perk, PerkCard, PerkType } from "../model/data/Perks";
+import { EntityValueFunction } from "../model/Entity";
 import { Figure } from "../model/Figure";
 import { Game } from "../model/Game";
 import { Monster } from "../model/Monster";
@@ -153,6 +154,7 @@ export class AttackModifierManager {
   addModifier(attackModifierDeck: AttackModifierDeck, attackModifier: AttackModifier, index: number = -1) {
     if (index < 0 || index > attackModifierDeck.cards.length) {
       index = Math.floor(Math.random() * (attackModifierDeck.cards.length - attackModifierDeck.current)) + attackModifierDeck.current + 1;
+      this.shuffleModifiers(attackModifierDeck, true);
     }
     attackModifierDeck.cards.splice(index, 0, attackModifier);
   }
@@ -296,9 +298,11 @@ export class AttackModifierManager {
     const current = attackModifierDeck.current;
     const lastVisible = attackModifierDeck.lastVisible;
     let restoreCards: AttackModifier[] = onlyUpcoming && current > -1 ? attackModifierDeck.cards.splice(0, current + 1) : [];
-    attackModifierDeck.cards = attackModifierDeck.cards.filter((attackModifier, index) =>
-      index > attackModifierDeck.current || (attackModifier.type != AttackModifierType.bless && attackModifier.type != AttackModifierType.curse && attackModifier.type != AttackModifierType.empower && attackModifier.type != AttackModifierType.enfeeble)
-    );
+    if (!onlyUpcoming) {
+      attackModifierDeck.cards = attackModifierDeck.cards.filter((attackModifier, index) =>
+        index > attackModifierDeck.current || (attackModifier.type != AttackModifierType.bless && attackModifier.type != AttackModifierType.curse && attackModifier.type != AttackModifierType.empower && attackModifier.type != AttackModifierType.enfeeble)
+      );
+    }
 
     // apply Challenge #1500
     if (gameManager.challengesManager.apply && gameManager.challengesManager.isActive(1500, 'fh')) {
@@ -742,5 +746,139 @@ export class AttackModifierManager {
     attackModifierDeck.state = model.state;
     attackModifierDeck.bb = model.bb;
   }
+
+  calculateAttackResult(attackModifierDeck: AttackModifierDeck, base: string | number, forceIndex: number = -1): AttackResult | undefined {
+    if (attackModifierDeck.current < 0) {
+      console.warn("No Attack Modifier drawn", attackModifierDeck);
+      return undefined;
+    }
+
+    let result: number = EntityValueFunction(base);
+    let stringified: string = '';
+    let rollingOffset: number = 1;
+    let firstCard: AttackModifier = attackModifierDeck.cards[attackModifierDeck.current];
+    let secondCard: AttackModifier = attackModifierDeck.cards[attackModifierDeck.current - 1];
+    let baseCard: AttackModifier = firstCard;
+    let chooseOffset: number = 0;
+    let effects: AttackModifierEffect[] = [];
+    const fh = gameManager.fhRules() || settingsManager.settings.alwaysFhAdvantage;
+
+    if (attackModifierDeck.state) {
+      switch (attackModifierDeck.state) {
+        case "advantage":
+          if (fh) {
+            rollingOffset = 2;
+            chooseOffset = -1;
+            if (this.applyAttackModifier(result, secondCard) > this.applyAttackModifier(result, baseCard)) {
+              baseCard = secondCard;
+              chooseOffset = 1;
+            }
+
+            // townguard
+            if (firstCard.type == AttackModifierType.success || secondCard.type == AttackModifierType.wreck) {
+              baseCard = firstCard;
+              chooseOffset = -1;
+            } else if (secondCard.type == AttackModifierType.success || firstCard.type == AttackModifierType.wreck) {
+              baseCard = secondCard;
+              chooseOffset = 1;
+            }
+
+          } else if (baseCard.rolling) {
+            baseCard = secondCard;
+            rollingOffset = 0;
+          } else if (!secondCard.rolling && this.applyAttackModifier(result, secondCard) > this.applyAttackModifier(result, baseCard)) {
+            baseCard = secondCard;
+            chooseOffset = 1;
+          }
+          break;
+        case "disadvantage":
+          if (fh) {
+            chooseOffset = -1;
+
+            // townguard
+            if (firstCard.type == AttackModifierType.wreck || secondCard.type == AttackModifierType.success) {
+              baseCard = firstCard;
+              chooseOffset = -1;
+            } else if (secondCard.type == AttackModifierType.wreck || firstCard.type == AttackModifierType.success) {
+              baseCard = secondCard;
+              chooseOffset = 1;
+            }
+          }
+          if (this.applyAttackModifier(result, secondCard) < this.applyAttackModifier(result, baseCard) || !fh && baseCard.rolling) {
+            baseCard = secondCard;
+            if (fh || !baseCard.rolling) {
+              chooseOffset = 1;
+            }
+          }
+          break
+      }
+
+      if (forceIndex != -1) {
+        baseCard = attackModifierDeck.cards[forceIndex];
+        chooseOffset = attackModifierDeck.current - forceIndex - (forceIndex == attackModifierDeck.current ? 1 : 0);
+      }
+    }
+
+    if (attackModifierDeck.state != 'disadvantage' && attackModifierDeck.current - rollingOffset > -1) {
+      let rollingCard: AttackModifier | undefined = attackModifierDeck.cards[attackModifierDeck.current - rollingOffset];
+      while (rollingCard && rollingCard.rolling && attackModifierDeck.current - rollingOffset >= attackModifierDeck.lastVisible) {
+        result = this.applyAttackModifier(result, rollingCard);
+        stringified += this.stringifyAttackModifierValue(rollingCard);
+        effects.push(...rollingCard.effects);
+        rollingOffset++;
+        if (attackModifierDeck.current - rollingOffset > -1) {
+          rollingCard = attackModifierDeck.cards[attackModifierDeck.current - rollingOffset]
+        } else {
+          rollingCard = undefined;
+        }
+      }
+    }
+
+    result = this.applyAttackModifier(result, baseCard);
+    stringified += this.stringifyAttackModifierValue(baseCard);
+
+    // put x2/x0 to end
+    const matches = stringified.match(/x\d+/g) || [];
+    stringified = EntityValueFunction(base) + stringified.replace(/x\d+/g, '');
+    if (matches.length) {
+      stringified = '(' + stringified + ')' + matches.join('');
+    }
+    effects.push(...baseCard.effects);
+
+    return new AttackResult(attackModifierDeck.cards.indexOf(baseCard), chooseOffset, attackModifierDeck.state, base, stringified, eval(stringified.replaceAll('x', '*')), effects);
+  }
+
+  applyAttackModifier(value: number, attackModifier: AttackModifier): number {
+    switch (attackModifier.valueType) {
+      case AttackModifierValueType.default:
+        if (attackModifier.value) {
+          console.warn("Possible invalid AM", attackModifier);
+        }
+        return value;
+      case AttackModifierValueType.plus:
+        return value + attackModifier.value;
+      case AttackModifierValueType.minus:
+        return value - attackModifier.value;
+      case AttackModifierValueType.multiply:
+        return value * attackModifier.value;
+    }
+  }
+
+  stringifyAttackModifierValue(attackModifier: AttackModifier): string {
+    switch (attackModifier.valueType) {
+      case AttackModifierValueType.default:
+        if (attackModifier.value) {
+          console.warn("Possible invalid AM", attackModifier);
+        }
+        return '+' + attackModifier.value;
+      case AttackModifierValueType.plus:
+        return '+' + attackModifier.value;
+      case AttackModifierValueType.minus:
+        return '-' + attackModifier.value;
+      case AttackModifierValueType.multiply:
+        return 'x' + attackModifier.value;
+    }
+  }
+
 
 }

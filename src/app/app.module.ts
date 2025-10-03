@@ -56,6 +56,7 @@ import { EntityMenuDialogComponent } from './ui/figures/entity-menu/entity-menu-
 import { FigureErrorsComponent, FigureErrorsDialogComponent } from './ui/figures/errors/errors';
 import { EventEffectsDialog } from './ui/figures/event-effects/event-effects';
 import { FavorsComponent } from './ui/figures/event-effects/favors/favors';
+import { OutpostAttackComponent } from './ui/figures/event-effects/outpost-attack/outpost-attack';
 import { EventRandomItemDialogComponent } from './ui/figures/event-effects/random-item/random-item-dialog';
 import { EventRandomScenarioDialogComponent } from './ui/figures/event-effects/random-scenario/random-scenario-dialog';
 import { EventCardAttackComponent } from './ui/figures/event/attack/event-card-attack';
@@ -92,6 +93,7 @@ import { MonsterStatsDialogComponent } from './ui/figures/monster/stats/stats-di
 import { ObjectiveContainerComponent } from './ui/figures/objective-container/objective-container';
 import { PartyBuildingsComponent } from './ui/figures/party/buildings/buildings';
 import { GardenComponent } from './ui/figures/party/buildings/garden/garden';
+import { BuildingsListComponent } from './ui/figures/party/buildings/list/buildings-list';
 import { PetCardComponent } from './ui/figures/party/buildings/stables/pet-card/pet-card';
 import { StablesComponent } from './ui/figures/party/buildings/stables/stables';
 import { BuildingUpgradeDialog } from './ui/figures/party/buildings/upgrade-dialog/upgrade-dialog';
@@ -207,6 +209,7 @@ import { TreasuresToolComponent } from './ui/tools/treasures/treasures-tool';
     AutoscrollDirective,
     BattleGoalComponent,
     BattleGoalSetupDialog,
+    BuildingsListComponent,
     BuildingUpgradeDialog,
     CampaignMenuComponent,
     CardRevealDirective,
@@ -319,6 +322,7 @@ import { TreasuresToolComponent } from './ui/tools/treasures/treasures-tool';
     MonsterStatsComponent,
     MonsterStatsDialogComponent,
     ObjectiveContainerComponent,
+    OutpostAttackComponent,
     PartyBuildingsComponent,
     PartyResourcesDialogComponent,
     PartySheetComponent,

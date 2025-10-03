@@ -840,6 +840,8 @@
         "loseCollectiveGold": "Lose {0} collective gold",
         "loseCollectiveResource": "Lose {0} collective %game.resource.{1}%",
         "loseCollectiveResourceType": "Lose {0} collective %game.loot.{1}% resources",
+        "loseResource": "Lose {0} %game.resource.{1}%",
+        "loseResourceType": "Lose {0} %game.loot.{1}% resource each",
         "moraleGT": "Morale > {0}",
         "moraleLT": "Morale < {0}",
         "otherwise": "Otherwise",
@@ -1002,6 +1004,10 @@
       },
       "option": {
         "": "Option {0}:"
+      },
+      "outpostAttack": {
+        "": "Outpost Attack",
+        "effects": "Following will be applied to the Outpost Attack"
       },
       "requirements": {
         "": "Requirements:",
@@ -1458,7 +1464,8 @@
             "": "Repair building",
             "action": "Repair building",
             "costs": "Any {0}",
-            "hint": "Repair building (force with double click)"
+            "hint": "Repair building (force with double click)",
+            "morale": "-1 Morale"
           },
           "rewards": {
             "action": "Level {0}",
@@ -1473,7 +1480,8 @@
           },
           "selectResources": {
             "": "Select Resources",
-            "confirm": "Confirm"
+            "confirm": "Confirm",
+            "morale": "-1 Morale"
           },
           "state": {
             "damaged": "damaged",
@@ -1543,6 +1551,36 @@
       "hint": "Creation of new campaign is disabled during a scenario. Finish or cancel current scenario to create a new campaign."
     },
     "notes": "Notes",
+    "outpostAttack": {
+      "advantage": "Gain advantage for this attack for losing soliders!",
+      "buildings": {
+        "damaged": "Damaged Building",
+        "wrecked": "Wrecked Building"
+      },
+      "defense": "Base Defense:",
+      "disadvantage": "Gain disadvantage because the Barracks are wrecked!",
+      "filter": {
+        "desc": "Descending Order",
+        "even": "Even",
+        "lowerBoundary": "Lower Boundary",
+        "odd": "Odd",
+        "parity": "Parity",
+        "randomize": "Randomize",
+        "upperBoundary": "Upper Boundary"
+      },
+      "finish": "Finish",
+      "map": "Open Global Map",
+      "next": "Next Target",
+      "other": "Other Buildings",
+      "result": {
+        "damage": "Building is damaged.<br>Failed with {0} Defense against %game.action.attack% {2}!",
+        "success": "Success with {0} defense against %game.action.attack% {2}!",
+        "successfull": "Defense was successfull!",
+        "wreck": "Building is wrecked!"
+      },
+      "sheet": "Open Party Sheet",
+      "targets": "Targeted Buildings"
+    },
     "prosperity": {
       "": "Prosperity",
       "reset": "Reset Prosperity",
@@ -1717,6 +1755,7 @@
         "section": "Open %data.section:{0}%, unlocks {2}"
       },
       "hint": "Apply to all selected figures",
+      "outpostAttack": "Outpost Attack",
       "progress": "Affects character progress"
     },
     "favors": {
