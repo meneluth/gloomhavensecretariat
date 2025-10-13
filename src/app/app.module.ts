@@ -177,6 +177,7 @@ import { EventCardsToolComponent } from './ui/tools/events/event-cards-tool';
 import { FeedbackToolComponent } from './ui/tools/feedback/feedback';
 import { FeedbackDialogComponent } from './ui/tools/feedback/feedback-dialog';
 import { RandomMonsterCardsToolComponent } from './ui/tools/random-monster-cards/random-monster-cards-tool';
+import { SoundboardDirective } from './ui/tools/soundboard/soundboard.directive';
 import { AttackModifierStandaloneComponent } from './ui/tools/standalone/attackmodifier/attackmodifier-standalone';
 import { InitiativeStandaloneComponent } from './ui/tools/standalone/initiative/initiative-standalone';
 import { LootDeckStandaloneComponent } from './ui/tools/standalone/loot-deck/loot-deck-standalone';
@@ -358,6 +359,7 @@ import { TreasuresToolComponent } from './ui/tools/treasures/treasures-tool';
     SettingMenuTitleComponent,
     SettingsDebugMenuComponent,
     SettingsMenuComponent,
+    SoundboardDirective,
     StablesComponent,
     StandeeComponent,
     StatisticsDialogComponent,
