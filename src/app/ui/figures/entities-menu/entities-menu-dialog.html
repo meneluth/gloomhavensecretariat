@@ -93,7 +93,7 @@
 
   <div class="entity-container">
     <span class="item" [ghs-label]="'game.dead'" [ghs-label-attribute]="'title'">
-      <a class="button" tabclick (click)="toggleDead()">
+      <a class="button" tabclick [soundboard]="'bell.mp3'" (click)="toggleDead()">
         <img src="./assets/images/status/dead.svg" />
       </a>
     </span>
