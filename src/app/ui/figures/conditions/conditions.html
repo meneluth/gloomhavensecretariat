@@ -3,6 +3,7 @@
   <div class="condition-container">
     @for (condition of conditions | trackUUID; track condition._trackUUID; let i = $index) {
     <a class="item"
+      [soundboard]="condition.name + '.mp3'"
       [ngClass]="{'disabled': !hasCondition(condition) && (!immunityEnabled && isImmune(condition.name) && !permanentEnabled && !isPermanent(condition.name) || isImmune(condition.name,true))}">
       @if (condition.types.indexOf(ConditionType.stack) != -1 || condition.types.indexOf(ConditionType.upgrade) != -1) {
       <img tabclick (click)="dec(condition)" class="ghs-svg dec" [ngClass]="{'disabled' : getValue(condition) <= 1}"
