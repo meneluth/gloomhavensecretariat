@@ -82,6 +82,8 @@ import { LootDeckFullscreenComponent } from './ui/figures/loot/loot-deck-fullscr
 import { LootRandomItemDialogComponent } from './ui/figures/loot/random-item/random-item-dialog';
 import { MonsterAbilityCardComponent } from './ui/figures/monster/cards/ability-card';
 import { MonsterImageComponent, MonsterImageDialogComponent } from './ui/figures/monster/cards/image';
+import { MonsterManualDrawComponent } from './ui/figures/monster/cards/manual-draw';
+import { MonsterManualDrawDialogComponent } from './ui/figures/monster/cards/manual-draw-dialog';
 import { MonsterLevelDialogComponent } from './ui/figures/monster/dialogs/level-dialog';
 import { MonsterNumberPicker } from './ui/figures/monster/dialogs/numberpicker';
 import { MonsterNumberPickerDialog } from './ui/figures/monster/dialogs/numberpicker-dialog';
@@ -175,6 +177,7 @@ import { EventCardsToolComponent } from './ui/tools/events/event-cards-tool';
 import { FeedbackToolComponent } from './ui/tools/feedback/feedback';
 import { FeedbackDialogComponent } from './ui/tools/feedback/feedback-dialog';
 import { RandomMonsterCardsToolComponent } from './ui/tools/random-monster-cards/random-monster-cards-tool';
+import { SoundboardDirective } from './ui/tools/soundboard/soundboard.directive';
 import { AttackModifierStandaloneComponent } from './ui/tools/standalone/attackmodifier/attackmodifier-standalone';
 import { InitiativeStandaloneComponent } from './ui/tools/standalone/initiative/initiative-standalone';
 import { LootDeckStandaloneComponent } from './ui/tools/standalone/loot-deck/loot-deck-standalone';
@@ -314,6 +317,8 @@ import { TreasuresToolComponent } from './ui/tools/treasures/treasures-tool';
     MonsterImageComponent,
     MonsterImageDialogComponent,
     MonsterLevelDialogComponent,
+    MonsterManualDrawComponent,
+    MonsterManualDrawDialogComponent,
     MonsterMenuComponent,
     MonsterNumberPicker,
     MonsterNumberPickerDialog,
@@ -354,6 +359,7 @@ import { TreasuresToolComponent } from './ui/tools/treasures/treasures-tool';
     SettingMenuTitleComponent,
     SettingsDebugMenuComponent,
     SettingsMenuComponent,
+    SoundboardDirective,
     StablesComponent,
     StandeeComponent,
     StatisticsDialogComponent,

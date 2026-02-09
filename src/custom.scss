@@ -1,0 +1,54 @@
+.fh {
+  ghs-monster {
+    display: flex !important;
+    justify-content: flex-start;
+
+    > .monster {
+      justify-content: flex-start;
+      width: auto;
+
+      .stats-container.full-ability {
+        display: none
+      }
+    }
+
+    > .entities-container.full-ability {
+      justify-content: flex-start;
+
+      .entities {
+        width: auto;
+        max-width: none;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .spacer {
+      }
+    }
+  }
+
+  ghs-footer {
+    height: 80px !important;
+
+    footer {
+      height: 80px !important;
+
+      .round-container a {
+        height: 80px !important;
+
+      }
+
+      .scenario-container {
+        justify-content: space-evenly;
+
+        .sections {
+          display: none !important;
+
+          &:has(> :not(:empty)) {
+            display: flex !important;
+          }
+        }
+      }
+    }
+  }
+}
